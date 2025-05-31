@@ -6,6 +6,12 @@ const VERIFY_TOKEN = "asim-zill-12345";
 
 app.use(express.json());
 
+// مسار افتراضي للرئيسية عشان ما يطلع Error من Vercel
+app.get("/", (req, res) => {
+  res.send("🔥 Minimal Server is Alive!");
+});
+
+// التحقق من Webhook الخاص بـ Meta
 app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
@@ -21,6 +27,7 @@ app.get("/webhook", (req, res) => {
   }
 });
 
+// استقبال رسائل POST من WhatsApp API
 app.post("/webhook", (req, res) => {
   console.log("Webhook POST received:", JSON.stringify(req.body, null, 2));
   res.sendStatus(200);
